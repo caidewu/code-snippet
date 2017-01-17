@@ -5,7 +5,7 @@ function timer(callback) {
     console.log('耗时：', performance.now() - start + 'ms');
 }
 
-function simpleRandom(length) {
+function arrayGenerator(length) {
     var arr = [];
     // var unit = Math.pow(10,(''+length).length-1);
     var unit = length;
@@ -120,7 +120,7 @@ function bubbleSort2(array) {
 
 
 // Test
-var longStr = JSON.stringify(simpleRandom(10000));
+var longStr = JSON.stringify(arrayGenerator(10000));
 var longArray = JSON.parse(longStr);
 bubbleSort(longArray);
 longArray = JSON.parse(longStr);
@@ -138,12 +138,142 @@ bubbleSort2(longArray);
  */
 
 /* ================================================================================ */
+/**
+ *
+ */
+function insertSort(array) {
+    var start = performance.now();
+
+    console.log('耗时：', performance.now() - start + 'ms');
+    return array;
+}
+
+/**
+ * 1.假设一位是最值，然后用剩下的值与其比较
+ */
+function selectSort(array) {
+    var start = performance.now();
+
+    console.log('耗时：', performance.now() - start + 'ms');
+    return array;
+}
+
+/**
+ * 快速排列 out-place
+ */
+function quickSort(array) {
+    var start = performance.now();
+    var count = 0;
+    array = (function sort(arr) {
+        if(arr.length <= 1) {
+            return arr;
+        }
+        var center = Math.floor(arr.length/2),
+            pivot = arr.splice(center, 1)[0], // 取一个中值，其实数组中任何值都行
+            left = [],
+            right = [];
+        for (var i = 0; i < arr.length; i++) {
+            count++;// 计数，与算法无关
+            if (arr[i] < pivot) {
+                left.push(arr[i]);
+            } else {
+                right.push(arr[i]);
+            }
+        }
+        return sort(left).concat(pivot,sort(right));
+    })(array);
+    console.log('循环次数：', count);
+    console.log('耗时：', performance.now() - start + 'ms');
+    return array;
+}
+
+longArray = JSON.parse(longStr);
+quickSort(longArray);
 
 
+/**
+ * 快速排列 in-place
+ *
+ * 没有为分组的数据新建新的内存空间，使得排列速度又提升了一个数量级
+ * @param arr
+ * @returns {*}
+ */
+function quickSort1(array) {
+    var start = performance.now();
+    var count = 0;
+    function swap(arr,index, storeIndex) {
+        var tmp = arr[storeIndex];
+        arr[storeIndex] = arr[index];
+        arr[index] = tmp;
 
+    }
+    (function sort(arr, left, right) { // 因为每次传进来都是完整的数组，所以要通过数组下标来定位每次循环的是数组的哪一部分
+        if (left > right) return;
+        var pivot = arr[right],
+            storeIndex = left;// 约定数组的left起始为小值区
+        for (var i = left; i < right; i++) {
+            count++;
+            if (arr[i] < pivot) {
+                // 交换
+                swap(arr, i, storeIndex);// 把小值放入小值区
+                storeIndex++; // 每为小值区域添加一个值，其下标就要加一
+            }
+        }
+        swap(arr, right, storeIndex);// 把基准值放到storeIndex位置上，这样，基准左边的所有值都比右边小
+        sort(arr, left, storeIndex - 1);// 基准左边的递归
+        sort(arr, storeIndex + 1, right);// 基准右边的递归
+    })(array, 0, array.length-1);
+    console.log('循环次数：', count);
+    console.log('耗时：', performance.now() - start + 'ms');
+    return array;
+}
 
+longArray = JSON.parse(longStr);
+quickSort(longArray);
+longArray = JSON.parse(longStr);
+quickSort1(longArray);
 
+/**
+ * 循环次数： 152952
+ * 耗时： 17.780000001192093ms
+ *
+ * 循环次数： 147995
+ * 耗时： 3.225000001490116ms
+ */
 
+/**
+ * 没有把pivot放到分组的中间，循环次数多了一些,
+ * 但每次循环中都少了一次换位，性能反而提升了
+ * @param arr
+ * @returns {*}
+ */
+function quickSort3(arr) {
+    var start = performance.now();
+    var count = 0;
+    (function sort(array, left, right) {
+        if (left < right) {
+            var pivot = array[right],
+                i = left - 1,
+                temp;
+            for (var j = left; j <= right; j++) {
+                count++;
+                if (array[j] <= pivot) {
+                    i++;
+                    temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                }
+            }
+            sort(array, left, i - 1);
+            sort(array, i + 1, right);
+        }
+
+    })(arr, 0, arr.length-1);
+
+    console.log('循环次数：', count);
+    console.log('耗时：', performance.now() - start + 'ms');
+    return arr;
+}
 
 
 
