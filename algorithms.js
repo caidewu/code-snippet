@@ -195,7 +195,7 @@ quickSort(longArray);
  * 快速排列 in-place
  *
  * 没有为分组的数据新建新的内存空间，使得排列速度又提升了一个数量级
- * @param arr
+ * @param array
  * @returns {*}
  */
 function quickSort1(array) {
@@ -220,6 +220,7 @@ function quickSort1(array) {
             }
         }
         swap(arr, right, storeIndex);// 把基准值放到storeIndex位置上，这样，基准左边的所有值都比右边小
+
         sort(arr, left, storeIndex - 1);// 基准左边的递归
         sort(arr, storeIndex + 1, right);// 基准右边的递归
     })(array, 0, array.length-1);
@@ -249,15 +250,13 @@ quickSort1(longArray);
  */
 function quickSort3(arr) {
     var start = performance.now();
-    var count = 0;
     (function sort(array, left, right) {
         if (left < right) {
             var pivot = array[right],
                 i = left - 1,
                 temp;
             for (var j = left; j <= right; j++) {
-                count++;
-                if (array[j] <= pivot) {
+                if (array[j] <= pivot) { // 这里必须小于等于
                     i++;
                     temp = array[i];
                     array[i] = array[j];
@@ -270,13 +269,64 @@ function quickSort3(arr) {
 
     })(arr, 0, arr.length-1);
 
-    console.log('循环次数：', count);
     console.log('耗时：', performance.now() - start + 'ms');
     return arr;
 }
 
 
+/**
+ * 数组最左边的数作为基准
+ *
+ * @param arr
+ * @returns {*}
+ */
+function quickSort4(arr) {
+    var start = performance.now();
+    (function sort(array, left, right) {
+        if (left < right) {
+            var pivot = array[left],
+                i = left,
+                temp;
+            for (var j = left; j <= right; j++) {
+                if (array[j] < pivot) { // 注意这里要小于
+                    temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                    i++;
+                }
+            }
+            sort(array, left, i - 1);
+            sort(array, i + 1, right);
+        }
 
+    })(arr, 0, arr.length-1);
+
+    console.log('耗时：', performance.now() - start + 'ms');
+    return arr;
+}
+
+/**
+ * 输入一个已经按升序排序过的数组和一个数字，在数组中查找两个数，使得它们的和正好是输入的那个数字。
+ * 要求时间复杂度是O(n)。如果有多对数字的和等于输入的数字，输出任意一对即可。
+ * 例如输入数组1、2、4、7、11、15和数字15。由于4+11=15，因此输出4和11。
+ * @param arr
+ * @param sum
+ * @returns {*}
+ */
+function findNum(arr,sum) {
+    var left = 0,
+        right = arr.length-1;
+    while (left < right) {
+        if (arr[left] + arr[right] === sum) {
+            return [true, arr[left], arr[right]];
+        } else if (arr[left] + arr[right] > sum) {
+            right--;
+        } else {
+            left++;
+        }
+    }
+    return false;
+}
 
 
 
