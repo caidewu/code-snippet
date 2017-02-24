@@ -22,3 +22,50 @@ function getParam1(param) {
     });
     return param ? obj[param] : obj;
 }
+
+
+
+
+// 数组去重
+Array.prototype.unique = function() {
+    var obj = {},
+        k,
+        ret = [];
+
+    this.forEach(function(v) {
+        if (typeof v == 'number') {
+            k = 'n' + v;
+        } else {
+            k = v;
+        }
+
+        if (!obj[k]) {
+            ret.push(v);
+            obj[k] = true;
+        }
+
+    });
+    return ret;
+};
+
+
+
+Array.prototype.unique1 = function() {
+    var obj = {},
+        type,
+        ret = [];
+
+    this.forEach(function(v) {
+       type = typeof v;
+
+        if (!obj[v]) {
+            ret.push(v);
+            obj[v] = [type];
+        } else if (obj[v].indexOf(type) === -1) {
+            ret.push(v);
+            obj[v].push(type);
+        }
+
+    });
+    return ret;
+};
