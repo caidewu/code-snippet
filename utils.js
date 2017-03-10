@@ -69,3 +69,47 @@ Array.prototype.unique1 = function() {
     });
     return ret;
 };
+
+
+
+function trycatch(fn, handle) {
+    try {
+        return fn();
+    } catch (err) {
+        return handle(err);
+    }
+}
+
+
+// 不使用loop循环，创建一个长度为100的数组，并且每个元素的值等于它的下标？
+
+// 方式1 利用字符串的类数组对象特性
+Object.keys(" ".repeat(100)).map(Number);
+
+// " ".repeat(100) 可以换成 new Int32Array(100)，Int32Array是会生成空数组
+Object.keys(new Int32Array(100)).map(Number);
+
+// 利用Number
+Array.apply(null, {length: 100}).map(Number.call);
+
+// keys把空数组转换成迭代器，扩展运算符执行迭代器生成数组
+[...new Array(100).keys()]
+
+// 通过fill初始化空数组, map把key赋给value
+new Array(100).fill().map((_,i) => i);
+
+// 通过Array.from初始化空数组
+Array.from(new Array(100)).map((_,k) => k);
+
+// 方式2 递归
+var arr=[];
+function fn(n) {
+    if ( n != 0 ) {
+        arr[n] = n;
+        fn(n - 1)
+    }else{
+        arr[0] = 0;
+    }
+}
+fn(99);
+console.log(arr);
