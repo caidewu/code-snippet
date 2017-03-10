@@ -3,9 +3,9 @@ var Observer = {
     add: function(fn) {
         this.callbacks.push(fn);
     },
-    fire: function() {
+    fire: function(arg1,arg2,arg3) {
         this.callbacks.forEach(function(fn) {
-            fn();
+            fn(arg1, arg2, arg3);
         })
     }
 };
