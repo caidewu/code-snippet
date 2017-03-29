@@ -6,12 +6,25 @@ const gulp = require('gulp'),
       imagemin = require('gulp-imagemin'),
       pngquant = require('imagemin-pngquant'),
       minifyHtml = require('gulp-minify-html'),
+      through2 = require('through2'),
       rev = require('gulp-rev');  // 文件名加言(防缓存)
       // minifyCss = require('gulp-minify-css'),
     //   runSequence = require('run-sequence'),
 // var $ = require('gulp-load-plugins')();
 
+// 对于回调函数只有一行带参数调用，可使用bind方法取代
+// 装逼写法，尽量不要用
 gulp.task('clean', del.bind(null, ['dist']));
+
+// del('dd'), 执行结果
+
+// del, Function
+
+// 正常写法
+// gulp.task('clean', function() {
+//     del(['dist']);
+// });
+
 gulp.task('dist', function() {
     return gulp.src([
         './**/*',
@@ -62,4 +75,21 @@ gulp.task('build:tx', ['clean:tx'], function(cb) {
     runSequence(
         ['usemin', 'imagemin'],
         cb);
+});
+
+gulp.task("updateVersion", function() {
+  return gulp.src('package.json')
+    .pipe(through2.obj(function(file, enc, cb) {
+      let ret = {};
+      ret.version = JSON.parse(file.contents.toString()).version;
+      file.contents = Buffer(JSON.stringify(ret));
+      // file.path = path.join(path.dirname(file.path),'version.json');
+      cb(null, file);
+    }))
+
+    .pipe(gulp.dest('./'))
+    .pipe((function() {
+      return isTrue ? next() : through2.obj()
+    })());
+
 });

@@ -5,7 +5,13 @@
  * @param arr
  */
 function clone(arr) {
-    return [].concat(arr);
+    return arr.concat();
+
+    // 或者使用slice
+    // return arr.slice();
+
+    // 支持类数组对象
+    // return Array.prototype.slice.call(arr);
 }
 
 /**

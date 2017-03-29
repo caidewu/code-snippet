@@ -1,0 +1,26 @@
+{
+  "name": "code-snippet",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:caidewu/code-snippet.git",
+  "author": "caidewu <caidewu555@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.7.7",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^3.2.0",
+    "gulp-minify-html": "^1.0.6",
+    "gulp-postcss": "^6.4.0",
+    "gulp-rev": "^7.1.2",
+    "gulp-sourcemaps": "^2.5.0",
+    "gulp-uglify": "^2.1.2",
+    "gulp-usemin": "^0.3.28",
+    "imagemin-pngquant": "^5.0.0",
+    "through2": "^2.0.3"
+  }
+}

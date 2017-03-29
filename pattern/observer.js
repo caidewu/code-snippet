@@ -11,11 +11,13 @@ var Observer = {
 };
 
 Observer.add(function() {
-    console.log('method1');
+    console.log('method1',arguments[0]);
 });
 
-Observer.add(function() {
-    console.log('method2');
+Observer.add(function(a,b) {
+    console.log('method2', b);
 });
 
-Observer.fire();
+Observer.add(console.log.bind(null, 'method3'));
+
+Observer.fire('aa','bb','cc');

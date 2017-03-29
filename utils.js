@@ -113,3 +113,13 @@ function fn(n) {
 }
 fn(99);
 console.log(arr);
+
+(function() {
+    // 类数组对象的转换
+    // 方式1：利用Array构造函数特性
+    let args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));
+
+    // 方式2：利用Array.prototype.slice方法,
+    // 对参数使用slice会阻止某些JavaScript引擎中的优化 比如 V8 引擎
+    let args1 = Array.prototype.slice.call(arguments);
+})();
