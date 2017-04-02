@@ -1,4 +1,4 @@
-const gulp = require('gulp'),
+var gulp = require('gulp'),
       del = require('del'),
       concat = require('gulp-concat'),
       usemin = require('gulp-usemin'),
@@ -80,7 +80,7 @@ gulp.task('build:tx', ['clean:tx'], function(cb) {
 gulp.task("updateVersion", function() {
   return gulp.src('package.json')
     .pipe(through2.obj(function(file, enc, cb) {
-      let ret = {};
+      var ret = {};
       ret.version = JSON.parse(file.contents.toString()).version;
       file.contents = Buffer(JSON.stringify(ret));
       // file.path = path.join(path.dirname(file.path),'version.json');
