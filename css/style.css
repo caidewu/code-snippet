@@ -31,6 +31,9 @@ input,textarea{
 
 /* second modify */
 
+
+/*third modify   */
+
 /* 1px 解决方案 (渐变) */
 .cover-list li:nth-child(odd):before {
     content: '';
